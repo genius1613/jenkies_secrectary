@@ -54,5 +54,6 @@ dependencies {
 
     compile 'org.apache.httpcomponents:httpclient:4.3.5'
 
-    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
+//    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
+//    compile 'org.gitlab:java-gitlab-api:1.1.4'
 }
