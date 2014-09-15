@@ -56,4 +56,7 @@ dependencies {
 
 //    compile 'org.eclipse.mylyn.github:org.eclipse.egit.github.core:2.1.5'
 //    compile 'org.gitlab:java-gitlab-api:1.1.4'
+
+    compile files('/home/tienbm/Downloads/jl1.0.jar')
+    compile files('/home/tienbm/Downloads/gtranslateapi-1.0.jar')
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <properties>
+        <name>email-address</name>
+        <value>mvkeymonitor@gmail.com</value>
+        <description>Email adress which is used as from address in notifcation email</description>
+    </properties>
+    <properties>
+        <name>email-account</name>
+        <value>mvkeymonitor</value>
+        <description>User name to login into mail server</description>
+    </properties>
+    <properties>
+        <name>email-password</name>
+        <value>monitor@mvs</value>
+        <description>Password to login into mail server</description>
+    </properties>
+    <properties>
+        <name>git-account</name>
+        <value>tienbm</value>
+        <description>Email adress which is used as from address in notifcation email</description>
+    </properties>
+    <properties>
+        <name>git-password</name>
+        <value>hongnhung90</value>
+        <description>Email adress which is used as from address in notifcation email</description>
+    </properties>
+    <properties>
+        <name>git-host</name>
+        <value>http://git.mv</value>
+        <description>Email adress which is used as from address in notifcation email</description>
+    </properties>
+
+
+</configuration>
