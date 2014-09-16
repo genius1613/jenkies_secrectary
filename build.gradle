@@ -49,6 +49,7 @@ dependencies {
 
     compile 'commons-configuration:commons-configuration:1.10'
     compile 'commons-collections:commons-collections:3.2.1'
+    compile 'commons-codec:commons-codec:1.9'
     compile 'org.slf4j:log4j-over-slf4j:1.5.11'
     compile 'org.slf4j:slf4j-nop:1.7.7'
 
