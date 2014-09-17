@@ -3,7 +3,7 @@ package vn.mvs.jenkies.secretary;
 /**
  * Created by tienbm on 16/09/2014.
  */
-public class Message {
+public class News {
     private String playTime =
             null;
     private String content= null;
@@ -24,11 +24,11 @@ public class Message {
         this.content = content;
     }
 
-    public Message(){
+    public News(){
 
     }
 
-    public Message(String time, String content){
+    public News(String time, String content){
         this.content = content;
         this.playTime = time;
     }

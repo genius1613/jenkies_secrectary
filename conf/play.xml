@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <properties>
-        <time>12:00</time>
-        <content>adress which is used as from address in notifcation email</content>
-    </properties>
-    <properties>
-        <time>1:00</time>
-        <content>adress which is used as from address in notifcation email</content>
-    </properties>
+    <message>
+        <properties>
+            <time>12:00</time>
+            <content>address which is used as from address in notifcation email</content>
+        </properties>
+        <properties>
+            <time>1:00</time>
+            <content>adress which is used as from address in notifcation email</content>
+        </properties>
+    </message>
+
 </configuration>

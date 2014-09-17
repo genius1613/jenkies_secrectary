@@ -1,17 +1,13 @@
 package vn.mvs.jenkies.secretary;
 
-import com.gtranslate.Audio;
 import com.gtranslate.Language;
-import javazoom.jl.decoder.JavaLayerException;
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.HierarchicalConfiguration;
 import org.apache.commons.configuration.XMLConfiguration;
-import vn.mvs.jenkies.git.GitNotification;
 
 import java.io.*;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.security.MessageDigest;
 
 /**
  * Created by tienbm on 16/09/2014.
@@ -19,20 +15,38 @@ import java.security.MessageDigest;
 public class Reports {
 
     private XMLConfiguration configuration;
+    private XMLConfiguration playXmlConfiguration;
+
+    private String systemPath;
+
+    private AudioPlayer audioPlayer;
 
     public Reports(XMLConfiguration configuration) {
-        String path = System.getProperty("user.dir");
+        systemPath = System.getProperty("user.dir");
         this.configuration = configuration;
     }
 
-    public List<Message> loadContent() {
-        List<HierarchicalConfiguration> properties = configuration.configurationsAt("email.properties");
-        List<Message> messages = new ArrayList<Message>();
-        if (properties != null && properties.size() > 0) {
-            for (HierarchicalConfiguration sub : properties) {
+    public Reports() {
+        systemPath = System.getProperty("user.dir");
+        try {
+            playXmlConfiguration = new XMLConfiguration(systemPath + "/conf/play.xml");
+
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+    public List<News> loadMessages() {
+        List<HierarchicalConfiguration> playMessage = playXmlConfiguration.configurationsAt("message.properties");
+        List<News> messages = new ArrayList<News>();
+        if (playMessage != null && playMessage.size() > 0) {
+            for (HierarchicalConfiguration sub : playMessage) {
                 String time = sub.getString("time");
                 String content = sub.getString("content");
-                Message mess = new Message(time, content);
+                News mess = new News(time, content);
                 messages.add(mess);
             }
 
@@ -43,68 +57,49 @@ public class Reports {
         return messages;
     }
 
-    public void saveReportToMp3 (List<Message> messages) {
-        try{
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            for (Message message : messages) {
+    public boolean checkFileIsExist(String folderDir, String fileName) {
+        File file = new File(folderDir, fileName);
+        if (file.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkFileIsExist(String fileName) {
+        File file = new File(fileName);
+        if (file.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public void runReport() {
+        try {
+            audioPlayer = new AudioPlayer();
+            List<News> news = loadMessages();
+            for (News nW : news) {
+                String fileName = audioPlayer.genenerateHash(nW.getContent());
+                String filePath = this.systemPath + "/data/mp3/" + fileName + ".mp3";
+//                check if file is not exist, get mp3 from google translate
+                if (!checkFileIsExist(filePath)) {
+                    //get mp3 file from google translate and save to local dir and then play
+                    Language language = Language.getInstance();
+                    audioPlayer.getMp3FromGoogleTrans(nW.getContent(), language.ENGLISH);
+
+                }
+                //do play Mp3 file
+                if(checkFileIsExist(filePath)){
+                    audioPlayer.play(filePath);
+                }
 
             }
-        }catch (NoSuchAlgorithmException e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-    }
-
-    public void runReport(){
-        try {
-            String path = System.getProperty("user.dir");
-            GitNotification gitNotification = new GitNotification();
-            String message = gitNotification.getNotifcations();
-            Audio audio = Audio.getInstance();
-            InputStream sound = audio.getAudio("Good morning, Mr Tienbm." + " You're two issues which must be solved today", Language.ENGLISH);
-//            InputStream sound = audio.getAudio(message, Language.ENGLISH);
-            audio.play(sound);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JavaLayerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void writeMp3File(InputStream inputStream, String outFilePath){
-        byte[] outBytes = inputStreamToByteArray(inputStream);
-        byteArrayToFile(outBytes, outFilePath);
-    }
-
-    public byte[] inputStreamToByteArray(InputStream inStream) {
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = inStream.read(buffer)) > 0) {
-                baos.write(buffer, 0, bytesRead);
-            }
-            return baos.toByteArray();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void byteArrayToFile(byte[] byteArray, String outFilePath) {
-
-        try {
-            FileOutputStream fos = new FileOutputStream(outFilePath);
-            fos.write(byteArray);
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
 

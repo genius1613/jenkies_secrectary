@@ -13,6 +13,7 @@ import javazoom.jl.decoder.JavaLayerException;
 import com.gtranslate.Language;
 import com.gtranslate.Audio;
 import vn.mvs.jenkies.git.GitNotification;
+import vn.mvs.jenkies.secretary.Reports;
 
 
 public class Application {
@@ -20,8 +21,8 @@ public class Application {
         System.out.println("Hello world");
         try {
             String path = System.getProperty("user.dir");
-            GitNotification gitNotification = new GitNotification();
-            String message = gitNotification.getNotifcations();
+//            GitNotification gitNotification = new GitNotification();
+//            String message = gitNotification.getNotifcations();
             Audio audio = Audio.getInstance();
             InputStream sound = audio.getAudio("Good morning, Mr Tienbm." + " You're two issues which must be solved today", Language.ENGLISH);
 //            InputStream sound = audio.getAudio(message, Language.ENGLISH);
@@ -29,6 +30,8 @@ public class Application {
             byteArrayToFile(resultBytes, path + "/data/mp3/test.mp3");
             audio.play(sound);
 
+            Reports reports = new Reports();
+            reports.runReport();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JavaLayerException e) {
